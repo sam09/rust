@@ -6,6 +6,8 @@ LL | fn foo<'a>() {
 ...
 LL |         return x;
    |                ^ returning this value requires that `'a` must outlive `'static`
+   |
+   = help: Consider replacing `'a` with `'static`
 
 help: the following changes may resolve your lifetime errors
    |
@@ -27,6 +29,8 @@ LL | fn bar<'a>() {
 ...
 LL |         b(x);
    |         ^^^^ argument requires that `'a` must outlive `'static`
+   |
+   = help: Consider replacing `'a` with `'static`
 
 help: the following changes may resolve your lifetime errors
    |

@@ -236,6 +236,8 @@ LL | fn two_regions<'a, 'b, T>(cell: Cell<&'a ()>, t: T)
 ...
 LL |     with_signature(cell, t, |cell, t| require(cell, t));
    |                             ^^^^^^^^^^^^^^^^^^^^^^^^^^ closure body requires that `'b` must outlive `'a`
+   |
+   = help: Consider adding the following bound: `'b: 'a`
 
 help: the following changes may resolve your lifetime errors
    |

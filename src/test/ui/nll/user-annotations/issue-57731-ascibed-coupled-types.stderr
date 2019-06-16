@@ -6,6 +6,8 @@ LL | fn coupled_wilds_rhs<'a>(_x: &'a u32, s: &'static u32) -> &'static u32 {
 LL |     let ((y, _z),) = ((s, _x),): (PairCoupledTypes<_>,);
 LL |     y
    |     ^ returning this value requires that `'a` must outlive `'static`
+   |
+   = help: Consider replacing `'a` with `'static`
 
 help: the following changes may resolve your lifetime errors
    |
@@ -19,6 +21,8 @@ LL | fn coupled_regions_rhs<'a>(_x: &'a u32, s: &'static u32) -> &'static u32 {
 LL |     let ((y, _z),) = ((s, _x),): (PairCoupledRegions<_>,);
 LL |     y
    |     ^ returning this value requires that `'a` must outlive `'static`
+   |
+   = help: Consider replacing `'a` with `'static`
 
 help: the following changes may resolve your lifetime errors
    |
@@ -32,6 +36,8 @@ LL | fn cast_coupled_wilds_rhs<'a>(_x: &'a u32, s: &'static u32) -> &'static u32
 LL |     let ((y, _z),) = ((s, _x),) as (PairCoupledTypes<_>,);
 LL |     y
    |     ^ returning this value requires that `'a` must outlive `'static`
+   |
+   = help: Consider replacing `'a` with `'static`
 
 help: the following changes may resolve your lifetime errors
    |
@@ -45,6 +51,8 @@ LL | fn cast_coupled_regions_rhs<'a>(_x: &'a u32, s: &'static u32) -> &'static u
 LL |     let ((y, _z),) = ((s, _x),) as (PairCoupledRegions<_>,);
 LL |     y
    |     ^ returning this value requires that `'a` must outlive `'static`
+   |
+   = help: Consider replacing `'a` with `'static`
 
 help: the following changes may resolve your lifetime errors
    |

@@ -7,6 +7,8 @@ LL | fn bar<'a, 'b>(x: Cell<&'a u32>, y: Cell<&'b u32>) {
    |        lifetime `'a` defined here
 LL |     Foo { x, y };
    |           ^ requires that `'a` must outlive `'b`
+   |
+   = help: Consider adding the following bound: `'a: 'b`
 
 help: the following changes may resolve your lifetime errors
    |

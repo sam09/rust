@@ -8,6 +8,8 @@ LL | fn with_assoc<'a,'b>() {
 ...
 LL |     let _: &'a WithHrAssoc<TheType<'b>> = loop { };
    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ type annotation requires that `'b` must outlive `'a`
+   |
+   = help: Consider adding the following bound: `'b: 'a`
 
 help: the following changes may resolve your lifetime errors
    |
@@ -23,6 +25,8 @@ LL | fn with_assoc_sub<'a,'b>() {
 ...
 LL |     let _: &'a WithHrAssocSub<TheType<'b>> = loop { };
    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ type annotation requires that `'b` must outlive `'a`
+   |
+   = help: Consider adding the following bound: `'b: 'a`
 
 help: the following changes may resolve your lifetime errors
    |

@@ -6,6 +6,8 @@ LL | fn uninit<'a>() {
 LL |     return;
 LL |     let x: &'static &'a ();
    |            ^^^^^^^^^^^^^^^ type annotation requires that `'a` must outlive `'static`
+   |
+   = help: Consider replacing `'a` with `'static`
 
 help: the following changes may resolve your lifetime errors
    |
@@ -19,6 +21,8 @@ LL | fn var_type<'a>() {
 LL |     return;
 LL |     let x: &'static &'a () = &&();
    |            ^^^^^^^^^^^^^^^ type annotation requires that `'a` must outlive `'static`
+   |
+   = help: Consider replacing `'a` with `'static`
 
 help: the following changes may resolve your lifetime errors
    |
@@ -31,6 +35,8 @@ LL | fn uninit_infer<'a>() {
    |                 -- lifetime `'a` defined here
 LL |     let x: &'static &'a _;
    |            ^^^^^^^^^^^^^^ type annotation requires that `'a` must outlive `'static`
+   |
+   = help: Consider replacing `'a` with `'static`
 
 help: the following changes may resolve your lifetime errors
    |
@@ -44,6 +50,8 @@ LL | fn infer<'a>() {
 LL |     return;
 LL |     let x: &'static &'a _ = &&();
    |            ^^^^^^^^^^^^^^ type annotation requires that `'a` must outlive `'static`
+   |
+   = help: Consider replacing `'a` with `'static`
 
 help: the following changes may resolve your lifetime errors
    |
@@ -57,6 +65,8 @@ LL | fn uninit_no_var<'a>() {
 LL |     return;
 LL |     let _: &'static &'a ();
    |            ^^^^^^^^^^^^^^^ type annotation requires that `'a` must outlive `'static`
+   |
+   = help: Consider replacing `'a` with `'static`
 
 help: the following changes may resolve your lifetime errors
    |
@@ -70,6 +80,8 @@ LL | fn no_var<'a>() {
 LL |     return;
 LL |     let _: &'static &'a () = &&();
    |            ^^^^^^^^^^^^^^^ type annotation requires that `'a` must outlive `'static`
+   |
+   = help: Consider replacing `'a` with `'static`
 
 help: the following changes may resolve your lifetime errors
    |
@@ -83,6 +95,8 @@ LL | fn infer_no_var<'a>() {
 LL |     return;
 LL |     let _: &'static &'a _ = &&();
    |            ^^^^^^^^^^^^^^ type annotation requires that `'a` must outlive `'static`
+   |
+   = help: Consider replacing `'a` with `'static`
 
 help: the following changes may resolve your lifetime errors
    |
@@ -96,6 +110,8 @@ LL | fn required_substs<'a>() {
 LL |     return;
 LL |     let _: C<'static, 'a, _> = C((), &(), &());
    |            ^^^^^^^^^^^^^^^^^ type annotation requires that `'a` must outlive `'static`
+   |
+   = help: Consider replacing `'a` with `'static`
 
 help: the following changes may resolve your lifetime errors
    |

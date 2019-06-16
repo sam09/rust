@@ -156,6 +156,8 @@ LL | fn static_to_a_to_static_through_variable<'a>(x: &'a u32) -> &'static u32 {
 ...
 LL |     y
    |     ^ returning this value requires that `'a` must outlive `'static`
+   |
+   = help: Consider replacing `'a` with `'static`
 
 help: the following changes may resolve your lifetime errors
    |
@@ -169,6 +171,8 @@ LL | fn static_to_a_to_static_through_tuple<'a>(x: &'a u32) -> &'static u32 {
 ...
 LL |     y
    |     ^ returning this value requires that `'a` must outlive `'static`
+   |
+   = help: Consider replacing `'a` with `'static`
 
 help: the following changes may resolve your lifetime errors
    |
@@ -182,6 +186,8 @@ LL | fn static_to_a_to_static_through_struct<'a>(_x: &'a u32) -> &'static u32 {
 LL |     let Single { value: y }: Single<&'a u32> = Single { value: &22 };
 LL |     y
    |     ^ returning this value requires that `'a` must outlive `'static`
+   |
+   = help: Consider replacing `'a` with `'static`
 
 help: the following changes may resolve your lifetime errors
    |
@@ -194,6 +200,8 @@ LL | fn a_to_static_then_static<'a>(x: &'a u32) -> &'static u32 {
    |                            -- lifetime `'a` defined here
 LL |     let (y, _z): (&'static u32, u32) = (x, 44);
    |                  ^^^^^^^^^^^^^^^^^^^ type annotation requires that `'a` must outlive `'static`
+   |
+   = help: Consider replacing `'a` with `'static`
 
 help: the following changes may resolve your lifetime errors
    |

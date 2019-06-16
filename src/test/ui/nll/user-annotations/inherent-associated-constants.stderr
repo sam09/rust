@@ -5,6 +5,8 @@ LL | fn non_wf_associated_const<'a>(x: i32) {
    |                            -- lifetime `'a` defined here
 LL |     A::<'a>::IC;
    |     ^^^^^^^^^^^ requires that `'a` must outlive `'static`
+   |
+   = help: Consider replacing `'a` with `'static`
 
 help: the following changes may resolve your lifetime errors
    |

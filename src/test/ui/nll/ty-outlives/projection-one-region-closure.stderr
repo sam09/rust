@@ -50,6 +50,8 @@ LL | fn no_relationships_late<'a, 'b, T>(cell: Cell<&'a ()>, t: T)
 ...
 LL |     with_signature(cell, t, |cell, t| require(cell, t));
    |                                       ^^^^^^^^^^^^^^^^ argument requires that `'b` must outlive `'a`
+   |
+   = help: Consider adding the following bound: `'b: 'a`
 
 help: the following changes may resolve your lifetime errors
    |
@@ -108,6 +110,8 @@ LL | fn no_relationships_early<'a, 'b, T>(cell: Cell<&'a ()>, t: T)
 ...
 LL |     with_signature(cell, t, |cell, t| require(cell, t));
    |                                       ^^^^^^^^^^^^^^^^ argument requires that `'b` must outlive `'a`
+   |
+   = help: Consider adding the following bound: `'b: 'a`
 
 help: the following changes may resolve your lifetime errors
    |

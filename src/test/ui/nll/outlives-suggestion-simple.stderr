@@ -7,6 +7,8 @@ LL | fn foo1<'a, 'b>(x: &'a usize) -> &'b usize {
    |         lifetime `'a` defined here
 LL |     x
    |     ^ returning this value requires that `'a` must outlive `'b`
+   |
+   = help: Consider adding the following bound: `'a: 'b`
 
 help: the following changes may resolve your lifetime errors
    |
@@ -19,6 +21,8 @@ LL | fn foo2<'a>(x: &'a usize) -> &'static usize {
    |         -- lifetime `'a` defined here
 LL |     x
    |     ^ returning this value requires that `'a` must outlive `'static`
+   |
+   = help: Consider replacing `'a` with `'static`
 
 help: the following changes may resolve your lifetime errors
    |
@@ -33,6 +37,8 @@ LL | fn foo3<'a, 'b>(x: &'a usize, y: &'b usize) -> (&'b usize, &'a usize) {
    |         lifetime `'a` defined here
 LL |     (x, y)
    |     ^^^^^^ function was supposed to return data with lifetime `'b` but it is returning data with lifetime `'a`
+   |
+   = help: Consider adding the following bound: `'a: 'b`
 
 error: lifetime may not live long enough
   --> $DIR/outlives-suggestion-simple.rs:14:5
@@ -43,6 +49,8 @@ LL | fn foo3<'a, 'b>(x: &'a usize, y: &'b usize) -> (&'b usize, &'a usize) {
    |         lifetime `'a` defined here
 LL |     (x, y)
    |     ^^^^^^ function was supposed to return data with lifetime `'a` but it is returning data with lifetime `'b`
+   |
+   = help: Consider adding the following bound: `'b: 'a`
 
 help: the following changes may resolve your lifetime errors
    |
@@ -58,6 +66,8 @@ LL | fn foo4<'a, 'b, 'c>(x: &'a usize) -> (&'b usize, &'c usize) {
 ...
 LL |     (x, x)
    |     ^^^^^^ returning this value requires that `'a` must outlive `'b`
+   |
+   = help: Consider adding the following bound: `'a: 'b`
 
 help: the following changes may resolve your lifetime errors
    |
@@ -70,6 +80,8 @@ LL |     pub fn foo<'a>(x: &'a usize) -> Self {
    |                -- lifetime `'a` defined here
 LL |         Foo { x }
    |         ^^^^^^^^^ returning this value requires that `'a` must outlive `'static`
+   |
+   = help: Consider replacing `'a` with `'static`
 
 help: the following changes may resolve your lifetime errors
    |
@@ -84,6 +96,8 @@ LL |     pub fn get<'b>(&self) -> &'b usize {
    |                -- lifetime `'b` defined here
 LL |         self.x
    |         ^^^^^^ returning this value requires that `'a` must outlive `'b`
+   |
+   = help: Consider adding the following bound: `'a: 'b`
 
 help: the following changes may resolve your lifetime errors
    |
@@ -98,6 +112,8 @@ LL |     fn get<'b>(&'b self) -> &'a i32 {
    |            -- lifetime `'b` defined here
 LL |         self.x
    |         ^^^^^^ returning this value requires that `'b` must outlive `'a`
+   |
+   = help: Consider adding the following bound: `'b: 'a`
 
 help: the following changes may resolve your lifetime errors
    |

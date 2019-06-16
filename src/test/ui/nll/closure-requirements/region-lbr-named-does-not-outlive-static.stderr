@@ -5,6 +5,8 @@ LL | fn foo<'a>(x: &'a u32) -> &'static u32 {
    |        -- lifetime `'a` defined here
 LL |     &*x
    |     ^^^ returning this value requires that `'a` must outlive `'static`
+   |
+   = help: Consider replacing `'a` with `'static`
 
 help: the following changes may resolve your lifetime errors
    |

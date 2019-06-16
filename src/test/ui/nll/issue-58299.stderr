@@ -6,6 +6,8 @@ LL | fn foo<'a>(x: i32) {
 ...
 LL |         A::<'a>::X..=A::<'static>::X => (),
    |         ^^^^^^^^^^ requires that `'a` must outlive `'static`
+   |
+   = help: Consider replacing `'a` with `'static`
 
 help: the following changes may resolve your lifetime errors
    |
@@ -19,6 +21,8 @@ LL | fn bar<'a>(x: i32) {
 ...
 LL |         A::<'static>::X..=A::<'a>::X => (),
    |                           ^^^^^^^^^^ requires that `'a` must outlive `'static`
+   |
+   = help: Consider replacing `'a` with `'static`
 
 help: the following changes may resolve your lifetime errors
    |

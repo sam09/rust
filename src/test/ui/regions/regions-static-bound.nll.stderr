@@ -5,6 +5,8 @@ LL | fn static_id_wrong_way<'a>(t: &'a ()) -> &'static () where 'static: 'a {
    |                        -- lifetime `'a` defined here
 LL |     t
    |     ^ returning this value requires that `'a` must outlive `'static`
+   |
+   = help: Consider replacing `'a` with `'static`
 
 help: the following changes may resolve your lifetime errors
    |
