@@ -8,11 +8,7 @@ LL | fn foo1<'a, 'b>(x: &'a usize) -> &'b usize {
 LL |     x
    |     ^ returning this value requires that `'a` must outlive `'b`
    |
-   = help: Consider adding the following bound: `'a: 'b`
-
-help: the following changes may resolve your lifetime errors
-   |
-   = help: add bound `'a: 'b`
+   = help: consider adding the following bound: `'a: 'b`
 
 error: lifetime may not live long enough
   --> $DIR/outlives-suggestion-simple.rs:10:5
@@ -22,11 +18,7 @@ LL | fn foo2<'a>(x: &'a usize) -> &'static usize {
 LL |     x
    |     ^ returning this value requires that `'a` must outlive `'static`
    |
-   = help: Consider replacing `'a` with `'static`
-
-help: the following changes may resolve your lifetime errors
-   |
-   = help: replace `'a` with `'static`
+   = help: consider replacing `'a` with `'static`
 
 error: lifetime may not live long enough
   --> $DIR/outlives-suggestion-simple.rs:14:5
@@ -38,7 +30,7 @@ LL | fn foo3<'a, 'b>(x: &'a usize, y: &'b usize) -> (&'b usize, &'a usize) {
 LL |     (x, y)
    |     ^^^^^^ function was supposed to return data with lifetime `'b` but it is returning data with lifetime `'a`
    |
-   = help: Consider adding the following bound: `'a: 'b`
+   = help: consider adding the following bound: `'a: 'b`
 
 error: lifetime may not live long enough
   --> $DIR/outlives-suggestion-simple.rs:14:5
@@ -50,7 +42,7 @@ LL | fn foo3<'a, 'b>(x: &'a usize, y: &'b usize) -> (&'b usize, &'a usize) {
 LL |     (x, y)
    |     ^^^^^^ function was supposed to return data with lifetime `'a` but it is returning data with lifetime `'b`
    |
-   = help: Consider adding the following bound: `'b: 'a`
+   = help: consider adding the following bound: `'b: 'a`
 
 help: the following changes may resolve your lifetime errors
    |
@@ -67,11 +59,7 @@ LL | fn foo4<'a, 'b, 'c>(x: &'a usize) -> (&'b usize, &'c usize) {
 LL |     (x, x)
    |     ^^^^^^ returning this value requires that `'a` must outlive `'b`
    |
-   = help: Consider adding the following bound: `'a: 'b`
-
-help: the following changes may resolve your lifetime errors
-   |
-   = help: add bound `'a: 'b`
+   = help: consider adding the following bound: `'a: 'b`
 
 error: lifetime may not live long enough
   --> $DIR/outlives-suggestion-simple.rs:31:9
@@ -81,11 +69,7 @@ LL |     pub fn foo<'a>(x: &'a usize) -> Self {
 LL |         Foo { x }
    |         ^^^^^^^^^ returning this value requires that `'a` must outlive `'static`
    |
-   = help: Consider replacing `'a` with `'static`
-
-help: the following changes may resolve your lifetime errors
-   |
-   = help: replace `'a` with `'static`
+   = help: consider replacing `'a` with `'static`
 
 error: lifetime may not live long enough
   --> $DIR/outlives-suggestion-simple.rs:41:9
@@ -97,11 +81,7 @@ LL |     pub fn get<'b>(&self) -> &'b usize {
 LL |         self.x
    |         ^^^^^^ returning this value requires that `'a` must outlive `'b`
    |
-   = help: Consider adding the following bound: `'a: 'b`
-
-help: the following changes may resolve your lifetime errors
-   |
-   = help: add bound `'a: 'b`
+   = help: consider adding the following bound: `'a: 'b`
 
 error: lifetime may not live long enough
   --> $DIR/outlives-suggestion-simple.rs:52:9
@@ -113,11 +93,7 @@ LL |     fn get<'b>(&'b self) -> &'a i32 {
 LL |         self.x
    |         ^^^^^^ returning this value requires that `'b` must outlive `'a`
    |
-   = help: Consider adding the following bound: `'b: 'a`
-
-help: the following changes may resolve your lifetime errors
-   |
-   = help: add bound `'b: 'a`
+   = help: consider adding the following bound: `'b: 'a`
 
 error[E0521]: borrowed data escapes outside of function
   --> $DIR/outlives-suggestion-simple.rs:73:9
