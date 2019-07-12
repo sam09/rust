@@ -110,22 +110,17 @@ impl OutlivesSuggestionBuilder {
         let fr_name = self.region_vid_to_name(errctx, renctx, errci.fr);
         let outlived_fr_name = self.region_vid_to_name(errctx, renctx, errci.outlived_fr);
 
-        match (fr_name, outlived_fr_name) {
-            (Some(fr_name), Some(outlived_fr_name)) => {
-                if let RegionNameSource::Static = outlived_fr_name.source {
-                    diag.help(&format!(
-                        "Consider replacing `{}` with `'static`", fr_name
-                    ));
-                } else {
-                    diag.help(&format!(
-                        "Consider adding the following bound: `{}: {}`",
-                        fr_name, outlived_fr_name
-                    ));
-                }
+        if let (Some(fr_name), Some(outlived_fr_name)) = (fr_name, outlived_fr_name) {
+            if let RegionNameSource::Static = outlived_fr_name.source {
+                diag.help(&format!(
+                    "consider replacing `{}` with `'static`", fr_name
+                ));
+            } else {
+                diag.help(&format!(
+                    "consider adding the following bound: `{}: {}`",
+                    fr_name, outlived_fr_name
+                ));
             }
-
-            // Not both suggestable
-            _ => {}
         }
     }
 
@@ -142,6 +137,13 @@ impl OutlivesSuggestionBuilder {
         // No constraints to add? Done.
         if self.constraints_to_add.is_empty() {
             debug!("No constraints to suggest.");
+            return;
+        }
+
+        // If there is only one constraint to suggest, then we already suggested it in the
+        // intermediate suggestion above.
+        if self.constraints_to_add.len() == 1 {
+            debug!("Only 1 suggestion. Skipping.");
             return;
         }
 
