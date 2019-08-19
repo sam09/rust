@@ -1,17 +1,17 @@
 //! Contains utilities for generating suggestions for borrowck errors related to unsatisified
 //! outlives constraints.
 
+use std::collections::BTreeMap;
+
 use log::debug;
 use rustc::{hir::def_id::DefId, infer::InferCtxt, mir::Body, ty::RegionVid};
-use rustc_data_structures::fx::{FxHashMap, FxHashSet};
+use rustc_data_structures::fx::FxHashSet;
 use rustc_errors::{Diagnostic, DiagnosticBuilder, Level};
 
 use crate::borrow_check::nll::region_infer::{
     error_reporting::{
-        ErrorReportingCtx,
-        ErrorConstraintInfo,
         region_name::{RegionName, RegionNameSource},
-        RegionErrorNamingCtx,
+        ErrorConstraintInfo, ErrorReportingCtx, RegionErrorNamingCtx,
     },
     RegionInferenceContext,
 };
@@ -29,13 +29,13 @@ pub struct OutlivesSuggestionBuilder {
     /// outlived_frs`. Not all of these regions will already have names necessarily. Some could be
     /// implicit free regions that we inferred. These will need to be given names in the final
     /// suggestion message.
-    constraints_to_add: FxHashMap<RegionVid, Vec<RegionVid>>,
+    constraints_to_add: BTreeMap<RegionVid, Vec<RegionVid>>,
 }
 
 impl OutlivesSuggestionBuilder {
     /// Create a new builder for the given MIR node representing a fn definition.
     crate fn new(mir_def_id: DefId) -> Self {
-        OutlivesSuggestionBuilder { mir_def_id, constraints_to_add: FxHashMap::default() }
+        OutlivesSuggestionBuilder { mir_def_id, constraints_to_add: BTreeMap::default() }
     }
 
     /// Returns `true` iff the `RegionNameSource` is a valid source for an outlives
@@ -90,11 +90,7 @@ impl OutlivesSuggestionBuilder {
         debug!("Collected {:?}: {:?}", fr, outlived_fr);
 
         // Add to set of constraints for final help note.
-        if let Some(ref mut outlived_frs) = self.constraints_to_add.get_mut(&fr) {
-            outlived_frs.push(outlived_fr);
-        } else {
-            self.constraints_to_add.insert(fr, vec![outlived_fr]);
-        }
+        self.constraints_to_add.entry(fr).or_insert(Vec::new()).push(outlived_fr);
     }
 
     /// Emit an intermediate note on the given `Diagnostic` if the involved regions are
@@ -112,9 +108,7 @@ impl OutlivesSuggestionBuilder {
 
         if let (Some(fr_name), Some(outlived_fr_name)) = (fr_name, outlived_fr_name) {
             if let RegionNameSource::Static = outlived_fr_name.source {
-                diag.help(&format!(
-                    "consider replacing `{}` with `'static`", fr_name
-                ));
+                diag.help(&format!("consider replacing `{}` with `'static`", fr_name));
             } else {
                 diag.help(&format!(
                     "consider adding the following bound: `{}: {}`",
@@ -167,18 +161,18 @@ impl OutlivesSuggestionBuilder {
         let mut unified_already = FxHashSet::default();
 
         let errctx = ErrorReportingCtx {
-            rinfcx, infcx, body,
+            rinfcx,
+            infcx,
+            body,
             mir_def_id: self.mir_def_id,
 
             // We should not be suggesting naming upvars, so we pass in a dummy set of upvars that
             // should never be used.
-            upvars: &[]
+            upvars: &[],
         };
 
         for (fr, outlived) in &self.constraints_to_add {
-            let fr_name = if let Some(fr_name) =
-                self.region_vid_to_name(&errctx, renctx, *fr)
-            {
+            let fr_name = if let Some(fr_name) = self.region_vid_to_name(&errctx, renctx, *fr) {
                 fr_name
             } else {
                 continue;
