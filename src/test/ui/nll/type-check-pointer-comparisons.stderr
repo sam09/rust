@@ -24,7 +24,7 @@ LL |     x == y;
 
 help: the following changes may resolve your lifetime errors
    |
-   = help: `'b` and `'a` must be the same; replace one with the other
+   = help: `'a` and `'b` must be the same; replace one with the other
 
 error: lifetime may not live long enough
   --> $DIR/type-check-pointer-comparisons.rs:12:5
